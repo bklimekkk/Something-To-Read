@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="SavedBook" representedClassName="SavedBook" syncable="YES">
+        <attribute name="about" optional="YES" attributeType="String"/>
+        <attribute name="author" optional="YES" attributeType="String"/>
+        <attribute name="bookImage" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="relationship" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SavedBuyLink" inverseName="origin" inverseEntity="SavedBuyLink"/>
+    </entity>
+    <entity name="SavedBuyLink" representedClassName="SavedBuyLink" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="url" optional="YES" attributeType="String"/>
+        <relationship name="origin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SavedBook" inverseName="relationship" inverseEntity="SavedBook"/>
+    </entity>
+    <elements>
+        <element name="SavedBook" positionX="-63" positionY="-18" width="128" height="104"/>
+        <element name="SavedBuyLink" positionX="-54" positionY="18" width="128" height="74"/>
+    </elements>
+</model>
