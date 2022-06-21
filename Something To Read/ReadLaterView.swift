@@ -17,43 +17,50 @@ struct ReadLaterView: View {
     @FetchRequest(sortDescriptors: []) var savedBooks: FetchedResults<SavedBook>
     @Environment(\.managedObjectContext) var moc
     
-    @State private var bookToShow: TheBook = TheBook(title: "", bookImage: "", author: "", description: "", buyLinks: []) 
- 
+    @State private var bookToShow: TheBook = TheBook(title: "", bookImage: "", author: "", description: "", buyLinks: [])
+    
     
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            LazyVGrid(columns: columns){
-                ForEach(savedBooks, id: \.title) { book in
-                    
-                    
-                    NavigationLink{
-                        DetailsView(fromReadingList: true, book: TheBook(title: book.wrappedTitle, bookImage: book.wrappedBookImage, author: book.wrappedAuthor, description: book.wrappedAbout, buyLinks: book.wrappedRelationship.map{BuyLink(name:$0.wrappedName, url:$0.wrappedUrl)}))
-                    }label:{
-                    AsyncImage(url: URL(string: book.wrappedBookImage)) { image in
-                        image
-                            .resizable()
-                            .frame(width: 160, height: 230)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                    } placeholder: {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(.gray)
-                                .frame(width: 160, height: 230)
-                            ProgressView()
+        
+        
+        if !savedBooks.isEmpty {
+            ScrollView(showsIndicators: false) {
+                LazyVGrid(columns: columns){
+                    ForEach(savedBooks, id: \.title) { book in
+                        
+                        
+                        NavigationLink{
+                            DetailsView(fromReadingList: true, book: TheBook(title: book.wrappedTitle, bookImage: book.wrappedBookImage, author: book.wrappedAuthor, description: book.wrappedAbout, buyLinks: book.wrappedRelationship.map{BuyLink(name:$0.wrappedName, url:$0.wrappedUrl)}))
+                        }label:{
+                            AsyncImage(url: URL(string: book.wrappedBookImage)) { image in
+                                image
+                                    .resizable()
+                                    .frame(width: 160, height: 230)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                            } placeholder: {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(.gray)
+                                        .frame(width: 160, height: 230)
+                                    ProgressView()
+                                }
+                                
+                            }
                         }
-                        
+                        .buttonStyle(.plain)
                     }
-                    }
-                    .buttonStyle(.plain)
-                        
-                    
-                    
-                    
                 }
+                .navigationTitle("Reading list")
+                .padding([.horizontal, .bottom, .top])
             }
-            .navigationTitle("Reading list")
-            .padding([.horizontal, .bottom, .top])
+        } else {
+            VStack {
+                Spacer()
+                Text("No books in the reading list")
+                    .font(.headline)
+                Spacer()
+            }
         }
     }
 }
